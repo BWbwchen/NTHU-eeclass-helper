@@ -4,9 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"net/http"
-	"os"
+	"io/ioutil"
 	"strings"
+)
+
+var (
+	EECLASS_BASE_URL            = "https://eeclass.nthu.edu.tw/dashboard"
+	EECLASS_DOWNLOAD_SUBMIT_URL = "https://eeclass.nthu.edu.tw/ajax/sys.pages.homework_submitList/package/?homeworkId="
+	EECLASS_DOWNLOAD_ZIP_URL    = ""
 )
 
 func downloadAllSubmit(allList []string, ajaxAuthGen string, ajaxAuthDownload string) {
@@ -16,11 +21,11 @@ func downloadAllSubmit(allList []string, ajaxAuthGen string, ajaxAuthDownload st
 	}
 	l := len(body)
 	body = body[:l-1]
-	client := &http.Client{}
 
-	req, _ := http.NewRequest("POST", EECLASS_DOWNLOAD_SUBMIT_URL+fmt.Sprint(HW_ID)+AJAX_ANCHOR_DOWNLOAD_SUBMIT+ajaxAuthGen, strings.NewReader(body))
-	req.Header.Set("cookie", COOKIE)
-	resp, _ := client.Do(req)
+	resp, err := sendRequest("POST", EECLASS_DOWNLOAD_SUBMIT_URL+HW_ID+AJAX_ANCHOR_DOWNLOAD_SUBMIT+ajaxAuthGen, strings.NewReader(body))
+	if err != nil {
+		panic(err)
+	}
 
 	b, _ := io.ReadAll(resp.Body)
 
@@ -43,21 +48,13 @@ func downloadAllSubmit(allList []string, ajaxAuthGen string, ajaxAuthDownload st
 }
 
 func download(url string, fileName string) {
-	fmt.Println(url)
-	client := &http.Client{}
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Set("cookie", COOKIE)
-	resp, _ := client.Do(req)
+	resp, err := sendRequest("GET", url, nil)
+	if err != nil {
+		panic(err)
+	}
 
 	defer resp.Body.Close()
 
-	f, e := os.Create(fileName)
-	if e != nil {
-		panic(e)
-	}
-	fmt.Println(resp.ContentLength)
-	fmt.Println(resp.Header)
-	fmt.Println(resp.Request.Header)
-	defer f.Close()
-	io.Copy(f, resp.Body)
+	body, _ := ioutil.ReadAll(resp.Body)
+	ioutil.WriteFile(fileName, []byte(body), 0644)
 }
