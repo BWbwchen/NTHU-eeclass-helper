@@ -34,6 +34,12 @@ https://eeclass.nthu.edu.tw/course/homework/2046
 COURSE_ID=2046
 ```
 
+## Run this tool
+Run the below command, and it will download the submitted file in the root directory of this project.
+```
+go run .
+```
+
 ## Goal
 - [ ] Input score from a csv file
 - [ ] Auto Login
