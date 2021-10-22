@@ -16,10 +16,17 @@ var (
 	AJAX_AUTH_DOWNLOAD_SUBMIT_LEN = 32
 )
 
+type Student struct {
+	ID       string `json:"student_id"`
+	Name     string `json:"student_name"`
+	SubmitID string `json:"submit_id"`
+}
+
 func getAllSubmitList() ([]string, string, string) {
 	client := &http.Client{}
 
 	var ret []string
+	var data []Student
 	ajaxAuthGen := ""
 	ajaxAuthDownload := ""
 
@@ -37,9 +44,25 @@ func getAllSubmitList() ([]string, string, string) {
 			log.Fatal(err)
 		}
 
-		doc.Find(`input[name="chkbox"]`).Each(func(i int, s *goquery.Selection) {
-			content, _ := s.Attr("value")
-			ret = append(ret, content)
+		doc.Find(`tr[class=" "]`).Each(func(i int, s *goquery.Selection) {
+			var d Student
+			s.Find(`input[name="chkbox"]`).Each(func(i int, ss *goquery.Selection) {
+				content, _ := ss.Attr("value")
+				d.SubmitID = content
+				ret = append(ret, content)
+			})
+			s.Find(`td[class="    col-photoAccount"] span[class="text "]`).Each(func(i int, ss *goquery.Selection) {
+				content := ss.Text()
+				d.Name = content
+				ret = append(ret, content)
+			})
+			s.Find(`div[class="fs-hint"]`).Each(func(i int, ss *goquery.Selection) {
+				content := ss.Text()
+				d.ID = content
+				ret = append(ret, content)
+			})
+
+			data = append(data, d)
 		})
 
 		if i == 1 {
@@ -57,5 +80,7 @@ func getAllSubmitList() ([]string, string, string) {
 
 		defer resp.Body.Close()
 	}
+
+	generateStudentScoreCSVTemplate(data)
 	return ret, ajaxAuthGen, ajaxAuthDownload
 }
