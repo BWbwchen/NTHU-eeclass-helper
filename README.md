@@ -41,6 +41,9 @@ Run the below command, and it follow the CLI-interactive prompt to download the 
 go run .
 ```
 
+## Run this tool from release
+Download the binary from release page, and then run it directly with `env` file in the same directory.
+
 ## Goal
 - [x] Input score from a csv file
 - [ ] Auto Login
