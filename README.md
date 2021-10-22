@@ -41,5 +41,5 @@ go run .
 ```
 
 ## Goal
-- [ ] Input score from a csv file
+- [x] Input score from a csv file
 - [ ] Auto Login
