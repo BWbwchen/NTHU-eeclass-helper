@@ -12,5 +12,6 @@ func sendRequest(method string, url string, body io.Reader) (*http.Response, err
 		return nil, err
 	}
 	req.Header.Set("cookie", COOKIE)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	return client.Do(req)
 }

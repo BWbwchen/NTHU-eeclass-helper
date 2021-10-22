@@ -20,6 +20,8 @@ type Student struct {
 	ID       string `json:"student_id"`
 	Name     string `json:"student_name"`
 	SubmitID string `json:"submit_id"`
+	Score    int    `json:"score"`
+	Comment  string `json:"comment"`
 }
 
 func getAllSubmitList() ([]string, string, string) {

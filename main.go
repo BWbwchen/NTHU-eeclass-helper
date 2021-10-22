@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -12,6 +11,7 @@ var (
 	EECLASS_LOGIN_TYPE = "application/x-www-form-urlencoded"
 	HW_ID              = ""
 	COOKIE             = ""
+	BASE_URL           = "https://eeclass.nthu.edu.tw"
 )
 
 func init() {
@@ -56,7 +56,7 @@ func mainLoop() int {
 	case DOWNLOAD_SUBMIT_FILE:
 		downloadAllSubmit(getAllSubmitList())
 	case UPLOAD_SCORE:
-		fmt.Println("Working now...")
+		sendScore()
 	default:
 		return 1
 	}
