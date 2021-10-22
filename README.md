@@ -1,7 +1,8 @@
 # NTHU eeclass TA helper 
-This is tool for TA whose school use eeclass course system.
 
-This tool can now only download all the submitted homework.
+[<img alt="github" src="https://img.shields.io/badge/github-NTHU--eeclass--helper-blue?style=for-the-badge&logo=github" height="20">](https://github.com/BWbwchen/NTHU-eeclass-helper)
+
+This tool is a CLI-interactive tool for TA who use eeclass platform. It helps TA to download all the submitted homeworks, and use CSV to record the score and homework comment, and upload CSV score directly to the eeclass platform with just 2 Enter key!
 
 ## How to use this tool
 1. Login from your browser.
@@ -34,8 +35,8 @@ https://eeclass.nthu.edu.tw/course/homework/2046
 COURSE_ID=2046
 ```
 
-## Run this tool
-Run the below command, and it will download the submitted file in the root directory of this project.
+## Run this tool from this repository
+Run the below command, and it follow the CLI-interactive prompt to download the submitted file in the root directory of this project, or upload the score.
 ```
 go run .
 ```
