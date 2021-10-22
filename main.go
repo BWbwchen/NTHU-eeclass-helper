@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -26,5 +27,38 @@ func loadGlobalVariable() {
 }
 
 func main() {
-	downloadAllSubmit(getAllSubmitList())
+	os.Exit(mainLoop())
+}
+
+const (
+	DOWNLOAD_SUBMIT_FILE = iota
+	UPLOAD_SCORE
+)
+
+func mainLoop() int {
+	err := promptInputString(func(in interface{}) error {
+		s := in.(string)
+		if s != "" {
+			HW_ID = s
+		}
+		return nil
+	})
+	if err != nil {
+		return 1
+	}
+
+	jobID, err := promptSelectJob()
+	if err != nil {
+		return 1
+	}
+
+	switch jobID {
+	case DOWNLOAD_SUBMIT_FILE:
+		downloadAllSubmit(getAllSubmitList())
+	case UPLOAD_SCORE:
+		fmt.Println("Working now...")
+	default:
+		return 1
+	}
+	return 0
 }
